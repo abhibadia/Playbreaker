@@ -1,0 +1,736 @@
+
+/* Default (light mode) styles */
+/* allow commit*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background-color: lightgray;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: large;
+    color: #b36200;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative; /* Ensure no inherited positioning issues */
+    /* Smooth transition */
+}
+
+img {height: 1em;}
+
+
+header {
+    position: sticky;
+    top: 0;
+    background-color: #333;
+    padding: 0;
+    /* Remove padding */
+    margin: 0;
+    /* Remove margin */
+    width: 100%;
+    /* Ensure the navbar takes up the full width */
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+    padding: 10px 10px;
+    /* Adjust padding as needed */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    /* Ensure it stretches across the full width */
+    transition: background-color 0.3s;
+}
+
+.navbar-notmain {
+    background-color: #333;
+    overflow: hidden;
+    padding: 10px 10px;
+    /* Adjust padding as needed */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    /* Ensure it stretches across the full width */
+    transition: background-color 0.3s;
+}
+
+/* Time display in the center */
+.center-time {
+    color: white;
+    font-size: 1rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    background-color: #444;
+    padding: 5px 10px;
+    border: 2px solid #666;
+    border-radius: 8px;
+}
+
+/* Logo styling */
+.logo-link {
+    margin-right: 20px;
+    /* Adjust this margin for equal spacing */
+}
+
+.logo {
+    height: 50px;
+}
+
+/* Styling for the nav links */
+.nav-links {
+    display: flex;
+    gap: 1togg0px;
+    /* Distance between the nav links */
+    margin-left: 10px;
+    opacity: 1;
+    /* Adjusted to shift nav links slightly to the right */
+}
+
+
+.nav-links a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+.nav-links a:hover {
+    background-color: #575757;
+    color: white;
+    border-radius: 20px;
+}
+
+/* Main content styling */
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Button styling */
+.uploadbutton {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: light;
+    color: #b36200;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+body.dark-mode .uploadbutton {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+
+
+.uploadbutton:hover {
+    background-color: #444;
+}
+
+body.dark-mode .uploadbutton:hover {
+    background-color: darkred;
+}
+
+#video-upload {
+    display: none;
+}
+
+.custom-upload-button {
+    display: inline-block;
+    background-color: #f0f0f0;
+    /* Background color for the button */
+    color: #b36200;
+    /* Text color */
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+body.dark-mode .custom-upload-button {
+    display: inline-block;
+    background-color: red;
+    /* Background color for the button */
+    color: white;
+    /* Text color */
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+body.dark-mode .custom-upload-button {
+    display: inline-block;
+    background-color: red;
+    /* Background color for the button */
+    color: white;
+    /* Text color */
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+.custom-upload-button:hover {
+    background-color: #444;
+    /* Hover color */
+}
+
+body.dark-mode .custom-upload-button:hover {
+    background-color: darkred;
+    /* Hover color */
+    color: white;
+}
+
+
+.toggle-switch-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-right: 30px;
+    /* Slightly shift the slider to the left */
+}
+
+
+/* Toggle switch styling */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+/* Keep the "Viewing Mode" text white */
+.toggle-text {
+    color: white;
+}
+
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:checked+.slider:before {
+    transform: translateX(26px);
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #1a1a1a;
+    /* Dark gray background */
+    color: white;
+    /* Neon green text */
+    transition: background-color 0.7s, color 0.7s;
+    /* Smooth transition */
+}
+
+body.dark-mode .navbar {
+    background-color: #000;
+    /* Pitch black navbar */
+}
+
+body.dark-mode .nav-links a {
+    color: white;
+    /* Navbar links stay white */
+}
+
+body.dark-mode .toggle-switch-container .slider {
+    background-color: red;
+    /* Green slider when dark mode is active */
+}
+
+body.dark-mode .navbar {
+    background-color: #000;
+    box-shadow: 0 4px 20px red;
+    /* Green glow effect */
+}
+
+body.dark-mode .navbar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    /* Position the glow slightly below the navbar */
+    height: 10px;
+    background: linear-gradient(to bottom,red, transparent);
+    border-radius: 10px;
+}
+
+/* Dark mode LED effect on the time */
+body.dark-mode .center-time {
+    box-shadow: 0 4px 20px  red;
+    /* Green glow effect */
+}
+
+body.dark-mode .center-time::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    /* Position the glow slightly below the time */
+    height: 5px;
+    background: linear-gradient(to bottom, red, transparent);
+    border-radius: 5px;
+}
+
+.court-container {
+    width: 600px;
+    height: 500px; /* Adjusted height */
+    margin: 20px auto;
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.7); /* Red glow effect */
+    background-color: #f3f3f3; /* Light background for the court */
+    overflow: hidden;
+    position: relative;
+    z-index: -1;
+}
+
+.basketball-court {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/court.png'); /* Replace with your court image */
+    background-size: cover; /* Ensures the image covers the entire area */
+    background-position: 10% center; /* Shift image slightly to the right */
+    background-repeat: no-repeat;
+}
+
+
+
+
+
+.player {
+    width: 30px;
+    height: 30px;
+    background-color: blue;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.5s ease-in-out;
+}
+
+.formation-buttons button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.formation-buttons button:hover {
+    background-color: #8b1313;
+}
+
+.player {
+    background-color: red; /* Changed to red */
+}
+
+
+.basketball-court {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/court.png'); /* Replace with your court image */
+    background-size: cover; /* Ensures the image covers the entire area */
+    background-position: center; /* Centers the image within the container */
+    background-repeat: no-repeat;
+}
+
+/* Ball roll animation */
+@keyframes roll {
+    0% {
+        left: -60px;
+        transform: rotate(0deg);
+    }
+    100% {
+        left: 100%;
+        transform: rotate(360deg);
+    }
+}
+
+#welcomeText {
+    text-align: center;
+    font-size: 2rem;
+    color: white; /* Change this to your desired color */
+    margin: 20px 0;
+    visibility: visible;
+}
+
+.ball-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.top-left {
+    position: absolute;
+    top: 70px; /* Adjust as needed */
+    left: 0; /* Align text to the left of the container */
+    width: max-content; /* Bound text width to content, adjust if necessary */
+    max-width: 35%; /* Ensure it doesn't extend too far; adjust percentage as needed */
+    text-align: left;
+    color: white; /* Change text color for contrast */
+    padding: 5px; /* Optional: Add padding */
+    font-size: 16px; /* Adjust text size */
+    z-index: 10; /* Ensure the text appears above the image */
+    word-wrap: break-word; /* Ensure long words wrap correctly */
+}
+
+.title-image {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    left: 0; /* Align text to the left of the container */
+    width: max-content; /* Bound text width to content, adjust if necessary */
+    max-width: 35%; /* Ensure it doesn't extend too far; adjust percentage as needed */
+    text-align: left;
+    color: white; /* Change text color for contrast */
+    padding: 5px; /* Optional: Add padding */
+    font-size: 48px; /* Adjust text size */
+    z-index: 10; /* Ensure the text appears above the image */
+    word-wrap: break-word; /* Ensure long words wrap correctly */
+}
+
+.lebron-button {
+    position: absolute;
+    top: 310px; /* Adjust as needed */
+    left: 0; /* Align text to the left of the container */
+    color: white; /* Change text color for contrast */
+    background-color: red;
+    padding: 5px; /* Optional: Add padding */
+    font-size: 12px; /* Adjust text size */
+    z-index: 10; /* Ensure the text appears above the image */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 7px 15px;
+    text-decoration: none;
+    display: inline-block; /* Ensure proper button behavior */
+}
+
+.lebron-button button:hover {
+    background-color: blue;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.slideshow, .slideshow_2 {
+    position: relative;
+    width: 100%; /* Full width of the parent */
+    max-width: 1000px; /* Optional max-width for responsiveness */
+    height: 600px; /* Fixed height or adjust as needed */
+    margin: auto;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.slideshow_2{
+    margin-top: 100em; /* adds 1 unit of spacing after each paragraph */
+}
+
+.slide, .slide_2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0; /* Initially hidden */
+    animation: fadeInOut 9s infinite; /* Animation for visibility */
+    display: flex; /* Align child elements */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+@keyframes fadeInOut {
+    0%, 45% {
+        opacity: 1; /* Slide visible for the first half of the cycle */
+    }
+    50%, 95% {
+        opacity: 0; /* Slide hidden during the second half of the cycle */
+    }
+}
+
+.slide:nth-child(1), .slide_2:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.slide:nth-child(2), .slide_2:nth-child(2) {
+    animation-delay: 12s; /* Adjust based on the total duration */
+}
+
+.slide:nth-child(3), .slide_2:nth-child(3) {
+    animation-delay: 24s; /* Adjust based on the total duration */
+}
+
+.slide:nth-child(4), .slide_2:nth-child(4) {
+    animation-delay: 36s; /* Adjust based on the total duration */
+}
+
+.slide:nth-child(5), .slide_2:nth-child(5) {
+    animation-delay: 48s; /* Adjust based on the total duration */
+}
+
+/* Adjust the total duration of the animation for seamless looping */
+.slide, .slide_2 {
+    animation: fadeInOut 60s infinite; /* Total duration = number of slides * individual duration */
+}
+
+.slide img {
+    width: 100%; /* Full width of the slide */
+    height: 100%; /* Full height of the slide */
+    object-fit: cover; /* Ensure the image fills without distortion */
+    position: absolute; /* Position image behind other content */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    z-index: -1; /* Ensure it's behind text and overlay */
+}
+
+.slide_2 img {
+    width: 100%; /* Full width of the slide */
+    height: 100%; /* Full height of the slide */
+    object-fit: cover; /* Ensure the image fills without distortion */
+    position: absolute; /* Position image behind other content */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    z-index: -1; /* Ensure it's behind text and overlay */
+}
+
+.translucent-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%; /* Adjust width as needed */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.551); /* Adjust opacity and color */
+    pointer-events: none; /* Prevent interactions */
+    z-index: 2; /* Ensure it appears above the image */
+}
+
+.cool {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.tenor-gif-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease; /* Smooth transition for visibility */
+    pointer-events: none; /* Prevent interference with other elements */
+}
+
+.tenor-gif-wrapper.show {
+    opacity: 1; /* Make visible when class is added */
+}
+
+.tenor-gif-embed {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.tenor-pop-container {
+    display: none !important;
+}
+
+/* Optional: Prevent pointer events on hover */
+.tenor-gif-embed a {
+    pointer-events: none;
+}
+
+/* Make the image take up the full screen */
+#top-image-container {
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    position: relative; /* To position the navbar above it */
+}
+
+#kingImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Makes sure the image covers the entire container */
+}
+
+/* Navbar styles to keep it fixed at the top */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Makes sure navbar stays above other elements */
+}
+
+.nav-links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #000;
+    opacity: 1 !important;
+    z-index: 1000;
+}
+
+/* Rest of the content's styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header, .formation-buttons, .court-container, .slideshow, #bottom {
+    opacity: 0;
+    transform: translateY(0px); /* Slightly hidden */
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+body.scrolled header, body.scrolled .formation-buttons, body.scrolled .court-container, body.scrolled .slideshow, body.scrolled #bottom {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 1000;
+    display: none;
+}
+.popup button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.popup button:hover {
+    opacity: 0.9;
+}
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}
+#videoPlayer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: auto;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid white;
+    box-shadow: 0 0 20px black;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 50%;
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    color: red;
+}
+

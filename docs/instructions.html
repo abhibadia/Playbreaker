@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructions</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="../docs/index.html"> <!-- Link to the homepage -->
+                <img src="../static/images/logo2.png" alt="Logo" class="logo">
+            </a>
+            <div id="current-time" class="center-time"></div>
+            <div class="nav-links">
+                <a href="about.html">About</a>
+                <a href="instructions.html">Instructions</a>
+                <a href="upload.html">Video Upload</a>
+            </div>
+            <div class="toggle-switch-container">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-text">Viewing Mode</span>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        // Check localStorage for dark mode preference
+        if (localStorage.getItem('dark-mode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+        // Toggle dark mode on checkbox change
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+            // Save the user's preference to localStorage
+            localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
+        });
+
+        // Function to update time
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById("current-time").textContent = timeString;
+        }
+
+        // Update the time every second
+        setInterval(updateTime, 1000);
+
+        // Initial call to display the time immediately
+        updateTime();
+    </script>
+
+<!-- <audio id="background-music" autoplay loop>
+        <source src="/static/music/song3.mp3" type="audio/mp3">
+    </audio>
+-->
+    <main>
+        <h1>Instructions</h1>
+        <p>	1.	Press the Upload button to select a video file in .mp4 format from your device. Your video should capture the basketball play you want to analyze.
+        <p>
+        <p>
+            2.	Once your video is uploaded, click the Analyze button. Our system will process the footage and break down the plays to give you optimized offensive and defensive strategies.
+            <p>
+                <p>
+            3.	When the analysis is complete, you’ll receive detailed recommendations including what play is being made, what formation, and the most optimized offensive and defensive strategy against a play to improve your game instantly. It’s quick and easy to get the insights you need with Ballr AI!
+<p>
+
+        </p>
+        <h1>Instructions</h1>
+        <p>	1.	Press the Upload button to select a video file in .mp4 format from your device. Your video should capture the basketball play you want to analyze.
+        <p>
+        <p>
+            2.	Once your video is uploaded, click the Analyze button. Our system will process the footage and break down the plays to give you optimized offensive and defensive strategies.
+            <p>
+                <p>
+            3.	When the analysis is complete, you’ll receive detailed recommendations including what play is being made, what formation, and the most optimized offensive and defensive strategy against a play to improve your game instantly. It’s quick and easy to get the insights you need with Ballr AI!
+<p>
+
+        </p>
+        <h1>Instructions</h1>
+        <p>	1.	Press the Upload button to select a video file in .mp4 format from your device. Your video should capture the basketball play you want to analyze.
+        <p>
+        <p>
+            2.	Once your video is uploaded, click the Analyze button. Our system will process the footage and break down the plays to give you optimized offensive and defensive strategies.
+            <p>
+                <p>
+            3.	When the analysis is complete, you’ll receive detailed recommendations including what play is being made, what formation, and the most optimized offensive and defensive strategy against a play to improve your game instantly. It’s quick and easy to get the insights you need with Ballr AI!
+<p>
+
+        </p>
+        <h1>Instructions</h1>
+        <p>	1.	Press the Upload button to select a video file in .mp4 format from your device. Your video should capture the basketball play you want to analyze.
+        <p>
+        <p>
+            2.	Once your video is uploaded, click the Analyze button. Our system will process the footage and break down the plays to give you optimized offensive and defensive strategies.
+            <p>
+                <p>
+            3.	When the analysis is complete, you’ll receive detailed recommendations including what play is being made, what formation, and the most optimized offensive and defensive strategy against a play to improve your game instantly. It’s quick and easy to get the insights you need with Ballr AI!
+<p>
+
+        </p>
+        <h1>Instructions</h1>
+        <p>	1.	Press the Upload button to select a video file in .mp4 format from your device. Your video should capture the basketball play you want to analyze.
+        <p>
+        <p>
+            2.	Once your video is uploaded, click the Analyze button. Our system will process the footage and break down the plays to give you optimized offensive and defensive strategies.
+            <p>
+                <p>
+            3.	When the analysis is complete, you’ll receive detailed recommendations including what play is being made, what formation, and the most optimized offensive and defensive strategy against a play to improve your game instantly. It’s quick and easy to get the insights you need with Ballr AI!
+<p>
+
+        </p>
+        <h1>Instructions</h1>
+        <p>	1.	Press the Upload button to select a video file in .mp4 format from your device. Your video should capture the basketball play you want to analyze.
+        <p>
+        <p>
+            2.	Once your video is uploaded, click the Analyze button. Our system will process the footage and break down the plays to give you optimized offensive and defensive strategies.
+            <p>
+                <p>
+            3.	When the analysis is complete, you’ll receive detailed recommendations including what play is being made, what formation, and the most optimized offensive and defensive strategy against a play to improve your game instantly. It’s quick and easy to get the insights you need with Ballr AI!
+<p>
+
+        </p>
+        <h1>Instructions</h1>
+        <p>	1.	Press the Upload button to select a video file in .mp4 format from your device. Your video should capture the basketball play you want to analyze.
+        <p>
+        <p>
+            2.	Once your video is uploaded, click the Analyze button. Our system will process the footage and break down the plays to give you optimized offensive and defensive strategies.
+            <p>
+                <p>
+            3.	When the analysis is complete, you’ll receive detailed recommendations including what play is being made, what formation, and the most optimized offensive and defensive strategy against a play to improve your game instantly. It’s quick and easy to get the insights you need with Ballr AI!
+<p>
+
+        </p>
+    </main>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 0) {  // Change 10 to however far you want to scroll before showing the content
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

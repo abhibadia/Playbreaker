@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basketball Defensive Formations</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+    <div id="top-image-container"> 
+        <img src="../static/images/king.png" alt="King Image" id="kingImage">
+    </div>
+
+    <!-- Navbar -->
+    <header>
+
+        <div class="navbar">
+            <a href="../docs/index.html">
+                <img src="../static/images/logo2.png" alt="Logo" class="logo">
+            </a>
+            <div id="current-time" class="center-time"></div>
+            <div class="nav-links">
+                <a href="about.html" accesskey="a">About</a>
+                <a href="instructions.html" accesskey="i">Instructions</a>
+                <a href="upload.html" accesskey="u">Video Upload</a>
+            </div>
+            <div class="toggle-switch-container">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle">
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <div id="overlay"></div>
+    <div class="popup" id="popup">
+        <p>First time on Ballr?</p>
+        <button id="yesBtn" accesskey="y">Yes</button>
+        <button id="noBtn" accesskey="n">No</button>
+    </div>
+
+    <div id="videoPlayerContainer">
+        <video id="videoPlayer" controls>
+            <source src="../static/video/brondit.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <button class="close-btn" id="closeBtn">&times;</button>
+    </div>
+
+    <main>
+
+        <h1 class="welcome-text" id="welcomeText">Welcome to Ballr.AI</h1>
+
+
+        <div class="slideshow">
+            <div class="slide">
+                <div class="title-image">Blocked!</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <a class="lebron-button" href="https://www.youtube.com/watch?v=Hgade7_mjHc" target="_blank">Watch here!</a>
+                <img src="../static/images/blocked.png" alt="Blocked Shot">
+                <div class="translucent-overlay"></div>
+            </div>
+            <div class="slide">
+                <div class="title-image">Stolen!</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <a class="lebron-button" href="https://www.youtube.com/watch?v=Hgade7_mjHc" target="_blank">Watch here!</a>
+                <img src="../static/images/stolen.png" alt="Stolen Ball">
+                <div class="translucent-overlay"></div>
+            </div>
+            <div class="slide">
+                <div class="title-image">Stolen!</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <a class="lebron-button" href="https://www.youtube.com/watch?v=Hgade7_mjHc" target="_blank">Watch here!</a>
+                <img src="../static/images/contested.png" alt="Contested Ball">
+                <div class="translucent-overlay"></div>
+            </div>
+            <div class="slide">
+                <div class="title-image">Foul!</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <a class="lebron-button" href="https://www.youtube.com/watch?v=Hgade7_mjHc" target="_blank">Watch here!</a>
+                <img src="../static/images/mad.png" alt="Mad">
+                <div class="translucent-overlay"></div>
+            </div>
+            <div class="slide">
+                <div class="title-image">Injured!</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <a class="lebron-button" href="https://www.youtube.com/watch?v=Hgade7_mjHc" target="_blank">Watch here!</a>
+                <img src="../static/images/hurt.png" alt="Hurt">
+                <div class="translucent-overlay"></div>
+            </div>
+        </div>
+
+        <h1 class="welcome-text" id="welcomeText">The Solution?</h1>
+        <button id="scrollBtn" accesskey="g">Go to Bottom</button>
+
+        <div class="tenor-gif-wrapper" id="gifWrapper">
+            <div class="tenor-gif-embed" 
+                data-postid="13596181858079823880" 
+                data-share-method="host" 
+                data-aspect-ratio="1" 
+                data-width="100%">
+                <a href="https://tenor.com/view/lbj-gif-13596181858079823880">Lbj GIF</a>
+                from <a href="https://tenor.com/search/lbj-gifs">Lbj GIFs</a>
+            </div>
+        </div>
+
+        <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+
+        <div class="slideshow_2" id="bottom">
+            <div class="slide_2">
+                <div class="title-image">2-3 Defense</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <img src="../static/images/2-3.png" alt="2-3">
+                <div class="translucent-overlay"></div>
+            </div>
+            <div class="slide">
+                <div class="title-image">3-2 Defense</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <img src="../static/images/3-2.jpeg" alt="3-2">
+                <div class="translucent-overlay"></div>
+            </div>
+            <div class="slide">
+                <div class="title-image">1-2-2 Defense</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <img src="../static/images/1-2-2.png" alt="1-2-2">
+                <div class="translucent-overlay"></div>
+            </div>
+            <div class="slide">
+                <div class="title-image">2-1-2 Defense</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <img src="../static/images/2-1-2.jpg" alt="2-1-2">
+                <div class="translucent-overlay"></div>
+            </div>
+            <div class="slide">
+                <div class="title-image">1-3-1 Defense</div>
+                <div class="top-left">
+                    <p>While the physical attributes and mental strength of your defender matters, getting blocked means that you have done something wrong in reading the defense, and executing moves.</p>
+                    <p>Understanding the defensive scheme you are playing can help you take the best shot possible. This means playing to the zone defense's weaknesses, passing, and creating a split second gap for that corner 3 or a slam dunk.</p>
+                </div>
+                <img src="../static/images/1-3-1.png" alt="1-3-1">
+                <div class="translucent-overlay"></div>
+            </div>
+        </div>
+
+        <div class="court-container">
+            <div class="basketball-court">
+                <div class="player" id="player1"></div>
+                <div class="player" id="player2"></div>
+                <div class="player" id="player3"></div>
+                <div class="player" id="player4"></div>
+                <div class="player" id="player5"></div>
+            </div>
+        </div>
+
+        <!-- Formation buttons -->
+        <div class="formation-buttons">
+            <button onclick="changeFormation('3-2')" accesskey="1">3-2 Scheme</button>
+            <button onclick="changeFormation('2-3')" accesskey="2">2-3 Scheme</button>
+            <button onclick="changeFormation('1-2-2')" accesskey="3">1-2-2 Scheme</button>
+            <button onclick="changeFormation('2-1-2')" accesskey="4">2-1-2 Scheme</button>
+            <button onclick="changeFormation('1-3-1')" accesskey="5">1-3-1 Scheme</button>
+        </div>
+
+    </main>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        if (localStorage.getItem('dark-mode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
+        });
+
+        // Function to update time
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // Update time every second
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call to display the time immediately
+
+        // Function to change player positions based on the selected formation
+        function changeFormation(formation) {
+            const players = [
+                document.getElementById('player1'),
+                document.getElementById('player2'),
+                document.getElementById('player3'),
+                document.getElementById('player4'),
+                document.getElementById('player5'),
+            ];
+
+            // Reset positions first
+            players.forEach(player => {
+                player.style.top = '50%';
+                player.style.left = '50%';
+            });
+
+            switch (formation) {
+                case '2-3':
+                    players[0].style.top = '20%'; players[0].style.left = '10%';
+                    players[1].style.top = '20%'; players[1].style.left = '50%';
+                    players[2].style.top = '20%'; players[2].style.left = '90%';
+                    players[3].style.top = '70%'; players[3].style.left = '30%';
+                    players[4].style.top = '70%'; players[4].style.left = '70%';
+                    break;
+                case '3-2':
+                    players[0].style.top = '20%'; players[0].style.left = '25%';
+                    players[1].style.top = '20%'; players[1].style.left = '70%';
+                    players[2].style.top = '70%'; players[2].style.left = '10%';
+                    players[3].style.top = '70%'; players[3].style.left = '47%';
+                    players[4].style.top = '70%'; players[4].style.left = '85%';
+                    break;
+                case '1-2-2':
+                    players[0].style.top = '23%'; players[0].style.left = '26%';
+                    players[1].style.top = '80%'; players[1].style.left = '47%';
+                    players[2].style.top = '50%'; players[2].style.left = '20%';
+                    players[3].style.top = '50%'; players[3].style.left = '74%';
+                    players[4].style.top = '23%'; players[4].style.left = '68%';
+                    break;
+                case '2-1-2':
+                    players[0].style.top = '20%'; players[0].style.left = '20%';
+                    players[1].style.top = '20%'; players[1].style.left = '75%';
+                    players[2].style.top = '50%'; players[2].style.left = '47%';
+                    players[3].style.top = '80%'; players[3].style.left = '20%';
+                    players[4].style.top = '80%'; players[4].style.left = '75%';
+                    break;
+                case '1-3-1':
+                    players[0].style.top = '15%'; players[0].style.left = '47%';
+                    players[1].style.top = '50%'; players[1].style.left = '15%';
+                    players[2].style.top = '50%'; players[2].style.left = '47%';
+                    players[3].style.top = '50%'; players[3].style.left = '80%';
+                    players[4].style.top = '90%'; players[4].style.left = '47%';
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        function scrollToBottom() {
+            document.getElementById('bottom').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        const scrollBtn = document.getElementById('scrollBtn');
+        const gifWrapper = document.getElementById('gifWrapper');
+
+        // Function to ensure the GIF wrapper becomes visible
+        function showGif() {
+            gifWrapper.classList.add('show');
+        }
+
+        // Function to hide the GIF wrapper
+        function hideGif() {
+            gifWrapper.classList.remove('show');
+        }
+
+        // Attach the scroll event logic
+        scrollBtn.addEventListener('click', () => {
+            // Show the GIF
+            showGif();
+
+            // Smooth scroll to the bottom of the page
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth',
+            });
+
+            // Use a timer to hide the GIF after the scroll duration
+            const scrollDuration = 1000; // Adjust this based on your scrolling duration
+            setTimeout(hideGif, scrollDuration);
+        });
+        
+        const dropArea = document.getElementById('drop-area');
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 10) {  // Change 10 to however far you want to scroll before showing the content
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        });
+
+        let popupShown = false;
+
+        window.addEventListener('scroll', () => {
+        if (!popupShown && window.scrollY > 100) {
+            popupShown = true;
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+        });
+
+        document.getElementById('yesBtn').addEventListener('click', () => {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('videoPlayer').style.display = 'block';
+        });
+
+        document.getElementById('noBtn').addEventListener('click', () => {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+        });
+
+        const videoPlayerContainer = document.getElementById('videoPlayerContainer');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const overlay = document.getElementById('overlay');
+        const popup = document.getElementById('popup');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const closeBtn = document.getElementById('closeBtn');
+
+        // Show popup on load
+        window.addEventListener('load', () => {
+            popup.style.display = 'block';
+        });
+
+        // Handle "Yes" button click
+        yesBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+            overlay.style.display = 'block';
+            videoPlayerContainer.style.display = 'block';
+            videoPlayer.play();
+        });
+
+        // Handle "No" button click
+        noBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+
+        // Hide video when it ends
+        videoPlayer.addEventListener('ended', () => {
+            closeVideo();
+        });
+
+        // Close video manually
+        closeBtn.addEventListener('click', () => {
+            closeVideo();
+        });
+
+        function closeVideo() {
+            videoPlayer.pause();
+            videoPlayerContainer.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

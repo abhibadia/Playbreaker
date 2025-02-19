@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Video + Homography + Color Tracking (Click Over Canvas)</title>
+  <!-- Load OpenCV.js (must match the version you downloaded or a CDN link) -->
+  <script src="opencv.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    #wrapper {
+      width: 800px;
+      margin: 20px auto;
+      text-align: center;
+    }
+    #video-container, #court-container {
+      position: relative;
+      display: inline-block;
+      width: 380px;
+      height: 285px;
+      border: 2px solid black;
+      margin: 5px;
+      vertical-align: top;
+    }
+    #court-container {
+      margin-left: 30px;
+    }
+    video, img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      pointer-events: none; /* So the video doesn't receive clicks */
+    }
+    canvas.overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: auto; /* This canvas gets the clicks */
+      z-index: 1000;
+    }
+    #transformed-coordinates {
+      margin-top: 10px;
+      height: 100px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 5px;
+      width: 780px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .controls {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Video + Homography + Color Tracking (Click Over Canvas)</h1>
+
+  <div id="wrapper">
+    <div class="controls">
+      <p>
+        1) Upload a video file below and press play (optional).  
+        2) Click 4 corners on the <strong>video</strong> overlay (blue).  
+        3) Click 4 corners on the <strong>bird's-eye</strong> overlay (black).  
+        4) Press "Start Tracking" for color detection.
+      </p>
+
+      <input type="file" id="videoUpload" accept="video/*" />
+      <button id="btnStart">Start Tracking</button>
+    </div>
+
+    <!-- VIDEO Container -->
+    <div id="video-container">
+      <!-- Video has NO controls and pointer-events: none -->
+      <video id="video" muted autoplay></video>
+      <!-- This canvas overlay receives clicks and draws bounding boxes/corners -->
+      <canvas id="video-overlay" class="overlay"></canvas>
+    </div>
+
+    <!-- Bird's-eye container -->
+    <div id="court-container">
+      <img id="courtImg" src="../static/basketball_court.jpg" alt="Bird's Eye Court" />
+      <canvas id="court-overlay" class="overlay"></canvas>
+    </div>
+
+    <h3>Transformed Coordinates (debug):</h3>
+    <div id="transformed-coordinates"></div>
+  </div>
+
+  <script>
+    // ====== DOM Elements ======
+    const video        = document.getElementById('video');
+    const videoOverlay = document.getElementById('video-overlay');
+    const videoCtx     = videoOverlay.getContext('2d');
+
+    const courtImg     = document.getElementById('courtImg');
+    const courtOverlay = document.getElementById('court-overlay');
+    const courtCtx     = courtOverlay.getContext('2d');
+
+    const btnStart     = document.getElementById('btnStart');
+    const coordOutput  = document.getElementById('transformed-coordinates');
+    const videoUpload  = document.getElementById('videoUpload');
+
+    // Store corners in each view
+    let pointsVideo = [];
+    let pointsCourt = [];
+    let collectingPoints = true;  // true until 4 corners in each
+    let homographyMatrix = null;  // 3x3
+
+    // For color tracking
+    let trackingActive = false;
+
+    // Label counters for corners
+    let cornerLabelVideo = 1;
+    let cornerLabelCourt = 1;
+
+    // =========== 1. Handle Local Video Upload ===========
+    videoUpload.addEventListener('change', (evt) => {
+      const file = evt.target.files[0];
+      if (!file) return;
+      const fileURL = URL.createObjectURL(file);
+      video.src = fileURL;
+      video.load();
+      video.play();
+    });
+
+    // =========== 2. Clicking on the VIDEO overlay =============
+    videoOverlay.addEventListener('click', (evt) => {
+      const rect = videoOverlay.getBoundingClientRect();
+      const x = evt.clientX - rect.left;
+      const y = evt.clientY - rect.top;
+
+      if (collectingPoints && pointsVideo.length < 4) {
+        pointsVideo.push([x, y]);
+        drawCornerPoint(videoCtx, x, y, 'blue', cornerLabelVideo++);
+        if (pointsVideo.length === 4 && pointsCourt.length < 4) {
+          console.log("Video corners done. Next: select corners on the bird's-eye view.");
+        }
+      } else {
+        // Once corners are done, color tracking will be automatic, so no need for more clicks.
+      }
+    });
+
+    // =========== 3. Clicking on the BIRD'S-EYE overlay =============
+    courtOverlay.addEventListener('click', (evt) => {
+      if (!collectingPoints) return;
+      const rect = courtOverlay.getBoundingClientRect();
+      const x = evt.clientX - rect.left;
+      const y = evt.clientY - rect.top;
+
+      if (pointsCourt.length < 4) {
+        pointsCourt.push([x, y]);
+        drawCornerPoint(courtCtx, x, y, 'black', cornerLabelCourt++);
+        if (pointsCourt.length === 4) {
+          console.log("All corners set. Computing homography...");
+          collectingPoints = false;
+          computeHomography();
+        }
+      }
+    });
+
+    // Draw corner points with label
+    function drawCornerPoint(ctx, x, y, color, label) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.fillStyle = 'black';
+      ctx.font = '14px Arial';
+      ctx.fillText(label, x + 6, y - 6);
+    }
+
+    // =========== 4. Compute Homography (client-side with OpenCV.js) ===========
+    function computeHomography() {
+      if (pointsVideo.length < 4 || pointsCourt.length < 4) {
+        console.warn("Not enough corners to compute homography!");
+        return;
+      }
+      let srcMat = cv.matFromArray(4, 1, cv.CV_32FC2, flattenPoints(pointsVideo));
+      let dstMat = cv.matFromArray(4, 1, cv.CV_32FC2, flattenPoints(pointsCourt));
+
+      let mask = new cv.Mat();
+      let H = cv.findHomography(srcMat, dstMat, cv.RANSAC, 5.0, mask);
+      homographyMatrix = H; // { matrix: cv.Mat, mask: cv.Mat, ... }
+      console.log("Homography found:", homographyMatrix);
+
+      srcMat.delete(); dstMat.delete(); mask.delete();
+      if (!homographyMatrix.matrix) {
+        console.error("Homography not computed properly!");
+        return;
+      }
+      console.log("Homography set. You can now 'Start Tracking'.");
+    }
+
+    function flattenPoints(pts) {
+      let out = [];
+      for (let i = 0; i < pts.length; i++) {
+        out.push(pts[i][0], pts[i][1]);
+      }
+      return new Float32Array(out);
+    }
+
+    // =========== 5. Start Tracking Button ===========
+    btnStart.addEventListener('click', () => {
+      if (!homographyMatrix || !homographyMatrix.matrix) {
+        alert("Homography not set! Select 4 corners on the video and 4 on the bird's-eye first.");
+        return;
+      }
+      trackingActive = true;
+      trackColorLoop();
+    });
+
+    // =========== 6. Color Tracking Loop (OpenCV.js) ===========
+    function trackColorLoop() {
+      if (!trackingActive) return;
+
+      let cap = null;
+      try {
+        cap = new cv.VideoCapture(video);
+      } catch(e) {
+        console.error("OpenCV.js: error capturing video frame:", e);
+        requestAnimationFrame(trackColorLoop);
+        return;
+      }
+
+      let width  = video.videoWidth;
+      let height = video.videoHeight;
+
+      // Resize overlay to video dimensions
+      videoOverlay.width = width;
+      videoOverlay.height = height;
+
+      let src  = new cv.Mat(height, width, cv.CV_8UC4);
+      let hsv  = new cv.Mat(height, width, cv.CV_8UC3);
+      let mask = new cv.Mat(height, width, cv.CV_8UC1);
+
+      // Read frame
+      cap.read(src);
+
+      // Convert to HSV
+      cv.cvtColor(src, hsv, cv.COLOR_RGBA2RGB, 0);
+      cv.cvtColor(hsv, hsv, cv.COLOR_RGB2HSV, 0);
+
+      // Example range for "red" color
+      let lower = new cv.Mat(hsv.rows, hsv.cols, hsv.type(), [0,120,70,0]);
+      let upper = new cv.Mat(hsv.rows, hsv.cols, hsv.type(), [10,255,255,0]);
+      cv.inRange(hsv, lower, upper, mask);
+
+      // findContours
+      let contours = new cv.MatVector();
+      let hierarchy = new cv.Mat();
+      cv.findContours(mask, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+
+      // Clear the overlay
+      videoCtx.clearRect(0, 0, width, height);
+
+      if (contours.size() > 0) {
+        let maxArea = 0, maxIdx = 0;
+        for (let i=0; i<contours.size(); i++){
+          let cnt = contours.get(i);
+          let area = cv.contourArea(cnt);
+          if(area > maxArea){
+            maxArea = area;
+            maxIdx = i;
+          }
+        }
+        let cnt = contours.get(maxIdx);
+        let rect = cv.boundingRect(cnt);
+
+        let [rx, ry, rw, rh] = [rect.x, rect.y, rect.width, rect.height];
+        // center
+        let cx = rx + rw/2;
+        let cy = ry + rh/2;
+
+        // draw bounding box
+        videoCtx.strokeStyle = "lime";
+        videoCtx.lineWidth = 2;
+        videoCtx.strokeRect(rx, ry, rw, rh);
+
+        // draw center
+        videoCtx.fillStyle = "red";
+        videoCtx.beginPath();
+        videoCtx.arc(cx, cy, 5, 0, 2*Math.PI);
+        videoCtx.fill();
+
+        // apply homography
+        let [tx, ty] = applyHomography(cx, cy);
+
+        // scale to displayed size of bird's-eye
+        let scaleX = courtImg.clientWidth / courtImg.naturalWidth;
+        let scaleY = courtImg.clientHeight / courtImg.naturalHeight;
+        let finalX = tx * scaleX;
+        let finalY = ty * scaleY;
+
+        // Clear court overlay each frame
+        courtCtx.clearRect(0, 0, courtOverlay.width, courtOverlay.height);
+
+        // draw green dot on the bird's-eye
+        courtCtx.fillStyle = "green";
+        courtCtx.beginPath();
+        courtCtx.arc(finalX, finalY, 5, 0, 2*Math.PI);
+        courtCtx.fill();
+      }
+
+      contours.delete(); hierarchy.delete();
+      src.delete(); hsv.delete(); mask.delete(); lower.delete(); upper.delete();
+
+      requestAnimationFrame(trackColorLoop);
+    }
+
+    // =========== 7. applyHomography function ===========
+    function applyHomography(px, py){
+      if(!homographyMatrix || !homographyMatrix.matrix){
+        return [0,0];
+      }
+      let srcPt = cv.matFromArray(3, 1, cv.CV_64FC1, [px, py, 1]);
+      let dstPt = new cv.Mat();
+      cv.gemm(homographyMatrix.matrix, srcPt, 1, new cv.Mat(), 0, dstPt);
+
+      let X = dstPt.data64F[0];
+      let Y = dstPt.data64F[1];
+      let W = dstPt.data64F[2];
+      srcPt.delete(); dstPt.delete();
+
+      if(W === 0) return [0, 0];
+      return [X/W, Y/W];
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 5
+names: ['ball', 'made', 'person', 'rim', 'shoot']
+
+roboflow:
+  workspace: test-datset
+  project: player-detection-kzcxz
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/test-datset/player-detection-kzcxz/dataset/1
