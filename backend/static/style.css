@@ -644,29 +644,10 @@ header {
     z-index: 1000; /* Makes sure navbar stays above other elements */
 }
 
-.nav-links a {
-    margin: 0 10px;
-    text-decoration: none;
-    color: #000;
-    opacity: 1 !important;
-    z-index: 1000;
-}
-
 /* Rest of the content's styling */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-}
-
-header, .formation-buttons, .court-container, .slideshow, #bottom {
-    opacity: 0;
-    transform: translateY(0px); /* Slightly hidden */
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-body.scrolled header, body.scrolled .formation-buttons, body.scrolled .court-container, body.scrolled .slideshow, body.scrolled #bottom {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .popup {

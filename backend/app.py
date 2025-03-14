@@ -1,13 +1,32 @@
 from flask import Flask, request, jsonify, render_template
 import numpy as np
 import cv2
+import requests
+import base64
+import os
 
 app = Flask(__name__)
 
+# Roboflow API Configuration
+ROBOFLOW_API_KEY = "1uPusGf1GlueyunHYYhR"
+ROBOFLOW_MODEL = "ballraitraining/1"
+ROBOFLOW_VERSION = "1"
+
 @app.route('/')
 def index():
-    # Ensure test.html is placed in the templates/ folder
+    return render_template('index.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/test')
+def test():
     return render_template('test.html')
+
+@app.route('/uploader')
+def uploader():
+    return render_template('upload.html')
 
 @app.route('/calculate_homography', methods=['POST'])
 def calculate_homography():
@@ -31,9 +50,43 @@ def calculate_homography():
         H_list = H.tolist()
     else:
         # If something went wrong, return an identity matrix or error
-        H_list = [[1,0,0],[0,1,0],[0,0,1]]
+        H_list = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
     return jsonify({'homographyMatrix': H_list})
+
+@app.route('/analyze', methods=['POST'])
+def analyze():
+    """
+    Receives a video frame (base64 image) and analyzes it using the Roboflow model.
+    Returns the detected defense classification.
+    """
+    data = request.json
+    image_data = data['image'].split(",")[1]  # Remove header from base64
+    image_path = "temp.png"
+
+    # Decode and save the image
+    with open(image_path, "wb") as f:
+        f.write(base64.b64decode(image_data))
+
+    # Send image to Roboflow
+    response = requests.post(
+        f"https://detect.roboflow.com/{ROBOFLOW_MODEL}/{ROBOFLOW_VERSION}?api_key={ROBOFLOW_API_KEY}",
+        files={"file": open(image_path, "rb")}
+    )
+
+    predictions = response.json()
+    defense_prediction = predictions.get('predictions', [])
+
+    # Extract the top label if available
+    if defense_prediction:
+        defense_label = defense_prediction[0]['class']
+    else:
+        defense_label = "Unknown Defense"
+
+    # Clean up temporary image
+    os.remove(image_path)
+
+    return jsonify({"prediction": defense_label})
 
 if __name__ == '__main__':
     app.run(debug=True)
