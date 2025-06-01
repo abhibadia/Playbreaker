@@ -9,6 +9,30 @@
     body {
       font-family: Arial, sans-serif;
       text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    /* Fixed navbar styling */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #fff;
+      border-bottom: 1px solid #ccc;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+    }
+    .navbar .logo {
+      height: 40px;
+    }
+    /* Container for all content below the navbar */
+    .content {
+      margin-top: 70px; /* Adjust based on navbar height */
+      padding: 20px;
     }
     /* Container for side-by-side display */
     #dual-container {
@@ -47,18 +71,21 @@
       pointer-events: none;
       z-index: 1000;
     }
+    /* Style for side buttons */
+    #side-buttons {
+      margin: 10px 0;
+    }
   </style>
 </head>
 <body>
-  <!-- Navbar integrated from your Defensive Formations page -->
   <header>
     <div class="navbar">
-      <a onclick = "location.href = '/'">
+      <a onclick="location.href='/'">
         <img src="../static/images/logo2.png" alt="Logo" class="logo">
       </a>
       <div id="current-time" class="center-time"></div>
       <div class="nav-links">
-        <a onclick="location.href = '/about'" accesskey="a"><u>A</u>bout</a>
+        <a onclick="location.href='/about'" accesskey="a"><u>A</u>bout</a>
         <a onclick="location.href='/test'" accesskey="c"><u>C</u>oordinate Simulator</a>
         <a onclick="location.href='/uploader'" accesskey="u">Video <u>U</u>pload</a>
       </div>
@@ -71,6 +98,42 @@
       </div>
     </div>
   </header>
+  
+  <!-- All page content is wrapped here -->
+  <div class="content">
+    <h1>Coordinate Transformation (Paint Area)</h1>
+    <p id="instructions">Please upload an image.</p>
+    
+    <!-- Upload input -->
+    <input type="file" id="image-upload-input" accept="image/*" />
+    <br /><br />
+    
+    <!-- Flex container for side-by-side image display -->
+    <div id="dual-container">
+      <!-- Uploaded image container -->
+      <div id="image-container">
+        <img id="image-upload" src="" alt="Uploaded Image" />
+        <canvas id="image-canvas"></canvas>
+      </div>
+      <!-- Bird's-eye view container (court view) -->
+      <div id="court-container">
+        <img id="court-view" src="/static/basketball_court.jpg" alt="Bird's Eye View" />
+        <canvas id="result"></canvas>
+      </div>
+    </div>
+    
+    <!-- Side selection buttons -->
+    <div id="side-buttons" style="display: none;">
+      <!-- These buttons can be used if you want to distinguish, say, between 2-3 and 3-2 based on which side is closer to midcourt. -->
+      <button onclick="findDefense('left')">Left Side</button>
+      <button onclick="findDefense('right')">Right Side</button>
+    </div>
+    
+    <!-- Display results -->
+    <h3>Transformed Coordinates / Defense Result:</h3>
+    <div id="transformed-coordinates"></div>
+    <p id="defense-result"></p>
+  </div>
   
   <!-- Dark mode and live time scripts -->
   <script>
@@ -95,66 +158,38 @@
     updateTime();
   </script>
   
-  <h1>Coordinate Transformation (Paint Area)</h1>
-  <p id="instructions">Please upload an image.</p>
-  
-  <!-- Upload input -->
-  <input type="file" id="image-upload-input" accept="image/*" />
-  <br /><br />
-  
-  <!-- Flex container for side-by-side image display -->
-  <div id="dual-container">
-    <!-- Uploaded image container -->
-    <div id="image-container">
-      <img id="image-upload" src="" alt="Uploaded Image" />
-      <canvas id="image-canvas"></canvas>
-    </div>
-    <!-- Bird's-eye view container (court view) -->
-    <div id="court-container">
-      <img id="court-view" src="/static/basketball_court.jpg" alt="Bird's Eye View" />
-      <canvas id="result"></canvas>
-    </div>
-  </div>
-  
-  <!-- Display transformed coordinates -->
-  <h3>Transformed Coordinates:</h3>
-  <div id="transformed-coordinates"></div>
-  
+
   <script>
-    // HTML elements
+
     const imageInput = document.getElementById('image-upload-input');
     const uploadedImage = document.getElementById('image-upload');
     const imageContainer = document.getElementById('image-container');
     const imageCanvas = document.getElementById('image-canvas');
     const imageCtx = imageCanvas.getContext('2d');
-  
+
     const courtView = document.getElementById('court-view');
     const courtCanvas = document.getElementById('result');
     const courtCtx = courtCanvas.getContext('2d');
-  
+
     const instructions = document.getElementById('instructions');
     const transformedList = document.getElementById('transformed-coordinates');
-  
-    // We'll store the 4 corners of the paint area for each image
+    const defenseResult = document.getElementById('defense-result');
+
+
     let pointsImage = [];
     let pointsCourt = [];
-  
-    // Once homography is computed, store it here
+    let defensePoints = [];
     let homographyMatrix = null;
-  
-    // True while collecting corners (4 from each image)
-    let collectingPoints = true;
-  
-    // Label for subsequent red points (after homography)
+    let collectingPoints = true;      
+    let collectingDefensePoints = false;   
     let redLabelCounter = 1;
-  
-    // Resize the drawing canvas to match the uploaded image's dimensions
+
+
     uploadedImage.onload = function () {
       imageCanvas.width = uploadedImage.width;
       imageCanvas.height = uploadedImage.height;
     };
-  
-    // Handle file upload
+
     imageInput.addEventListener('change', (event) => {
       const file = event.target.files[0];
       if (file) {
@@ -172,41 +207,38 @@
         reader.readAsDataURL(file);
       }
     });
-  
-    // Clicking on the uploaded image
+
     uploadedImage.addEventListener('click', function (event) {
       if (collectingPoints && pointsImage.length < 4) {
         const x = event.offsetX;
         const y = event.offsetY;
         pointsImage.push([x, y]);
         drawPoint(x, y, imageCtx, 'red');
-        instructions.textContent = `Corner ${pointsImage.length} selected on the paint area. ${
-          4 - pointsImage.length
-        } more needed.`;
+        instructions.textContent = `Corner ${pointsImage.length} selected on the paint area. ${4 - pointsImage.length} more needed.`;
         if (pointsImage.length === 4) {
-          instructions.textContent =
-            "Now click the same 4 paint corners on the bird's-eye view image (in the same order).";
+          instructions.textContent = "Now click the same 4 paint corners on the bird's-eye view image (in the same order).";
         }
-      } else if (!collectingPoints && homographyMatrix) {
+      }
+      else if (collectingDefensePoints && defensePoints.length < 5) {
         const x = event.offsetX;
         const y = event.offsetY;
-        drawLabeledPoint(x, y, imageCtx, 'red', redLabelCounter);
         const [tx, ty] = applyHomography([x, y], homographyMatrix);
         const scaleX = courtView.clientWidth / courtView.naturalWidth;
         const scaleY = courtView.clientHeight / courtView.naturalHeight;
         const finalX = tx * scaleX;
         const finalY = ty * scaleY - 26;
+        defensePoints.push({x: finalX, y: finalY});
+        drawLabeledPoint(x, y, imageCtx, 'green', redLabelCounter);
         drawPoint(finalX, finalY, courtCtx, 'black');
-        const coordItem = document.createElement('p');
-        coordItem.textContent = `Point ${redLabelCounter}: Original (${x.toFixed(
-          2
-        )}, ${y.toFixed(2)}) → Transformed (${tx.toFixed(2)}, ${ty.toFixed(2)})`;
-        transformedList.appendChild(coordItem);
+        transformedList.innerHTML += `<p>Defense Point ${redLabelCounter}: (${finalX.toFixed(2)}, ${finalY.toFixed(2)})</p>`;
         redLabelCounter++;
+        if (defensePoints.length === 5) {
+          instructions.textContent = "5 defense points recorded. Now choose the side of the court:";
+          document.getElementById("side-buttons").style.display = "block";
+        }
       }
     });
-  
-    // Clicking on the bird’s-eye view
+
     courtView.addEventListener('click', function (event) {
       if (collectingPoints && pointsCourt.length < 4) {
         const scaleX = courtView.naturalWidth / courtView.clientWidth;
@@ -215,9 +247,7 @@
         const y = event.offsetY * scaleY;
         pointsCourt.push([x, y]);
         drawPoint(x, y, courtCtx, 'black');
-        instructions.textContent = `Corner ${pointsCourt.length} selected on the bird's-eye paint. ${
-          4 - pointsCourt.length
-        } more needed.`;
+        instructions.textContent = `Corner ${pointsCourt.length} selected on the bird's-eye view. ${4 - pointsCourt.length} more needed.`;
         if (pointsCourt.length === 4) {
           fetch('/calculate_homography', {
             method: 'POST',
@@ -231,49 +261,127 @@
             .then((data) => {
               homographyMatrix = data.homographyMatrix;
               collectingPoints = false;
-              instructions.textContent =
-                'Homography for the paint area is set! ' +
-                'Click on the uploaded image to see transforms. ' +
-                'If you click again on the bird’s-eye, those points will show up in green.';
+              instructions.textContent = 'Homography for the paint area is set! Now click on the uploaded image to record 5 defense points.';
+              collectingDefensePoints = true;
             })
             .catch((err) => console.error('Error fetching homography:', err));
         }
-      } else if (!collectingPoints && homographyMatrix) {
-        const scaleX = courtView.naturalWidth / courtView.clientWidth;
-        const scaleY = courtView.naturalHeight / courtView.clientHeight;
-        const x = event.offsetX * scaleX;
-        const y = event.offsetY * scaleY;
-        drawPoint(x, y, courtCtx, 'green');
       }
     });
-  
-    // Draw a small circle
+
     function drawPoint(x, y, ctx, color) {
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.arc(x, y, 5, 0, 2 * Math.PI);
       ctx.fill();
     }
-  
-    // Draw a labeled circle (for red points)
+
     function drawLabeledPoint(x, y, ctx, color, label) {
       drawPoint(x, y, ctx, color);
       ctx.fillStyle = 'black';
       ctx.font = '14px Arial';
       ctx.fillText(label, x + 8, y - 8);
     }
-  
-    // Apply the 3x3 homography matrix from the backend
     function applyHomography(point, H) {
       const [x, y] = point;
       const denom = H[2][0] * x + H[2][1] * y + H[2][2];
       if (denom === 0) {
-        console.warn('Denominator=0 in homography. Returning (0,0).');
+        console.warn('Denom=0 in homography. Returning (0,0).');
         return [0, 0];
       }
       const tx = ((H[0][0] * x + H[0][1] * y + H[0][2]) / denom) / 2;
       const ty = ((H[1][0] * x + H[1][1] * y + H[1][2]) / denom) / 2;
       return [tx, ty];
+    }
+
+    // --- Formation Detection Based on Clustering ---
+    //
+    // We define helper functions to cluster points by a given coordinate (x or y)
+    // with a given tolerance.
+    function clusterByX(points, tolerance) {
+      let sorted = points.slice().sort((a, b) => a.x - b.x);
+      let clusters = [];
+      let currentCluster = [sorted[0]];
+      for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i].x - currentCluster[currentCluster.length - 1].x <= tolerance) {
+          currentCluster.push(sorted[i]);
+        } else {
+          clusters.push(currentCluster);
+          currentCluster = [sorted[i]];
+        }
+      }
+      clusters.push(currentCluster);
+      return clusters;
+    }
+    
+    function clusterByY(points, tolerance) {
+      let sorted = points.slice().sort((a, b) => a.y - b.y);
+      let clusters = [];
+      let currentCluster = [sorted[0]];
+      for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i].y - currentCluster[currentCluster.length - 1].y <= tolerance) {
+          currentCluster.push(sorted[i]);
+        } else {
+          clusters.push(currentCluster);
+          currentCluster = [sorted[i]];
+        }
+      }
+      clusters.push(currentCluster);
+      return clusters;
+    }
+
+    
+    // The main formation detection function:
+    // It first attempts to detect a three-row formation (for 1-2-2, 1-3-1, 2-1-2)
+    // by clustering the defense points along the y-axis.
+    // If that fails, it falls back to clustering along the x-axis (for 2-3 or 3-2).
+    function identifyDefenseFormation() {
+      if (defensePoints.length !== 5) {
+        alert("Please record 5 defense points first.");
+        return "Insufficient data";
+      }
+      
+      const toleranceY = 75;  // Adjusted tolerance for Y clustering.
+      const toleranceX = 75;  // Adjusted tolerance for X clustering.
+      
+      // Cluster by Y for potential three-row formations.
+      let clustersY = clusterByY(defensePoints, toleranceY);
+      console.log("clustersY lengths:", clustersY.map(c => c.length));  // Debug log.
+      if (clustersY.length === 3) {
+        let counts = clustersY.map(cluster => cluster.length);
+        let formationStr = counts.join("-");
+        if (formationStr === "1-2-2" || formationStr === "1-3-1" || formationStr === "2-1-2") {
+          return formationStr + " Defense";
+        }
+      }
+      
+      // Otherwise, cluster by X for two-row formations.
+      let clustersX = clusterByX(defensePoints, toleranceX);
+      console.log("clustersX lengths:", clustersX.map(c => c.length));  // Debug log.
+      if (clustersX.length === 2) {
+        let counts = clustersX.map(cluster => cluster.length);
+        if (counts.includes(2) && counts.includes(3)) {
+          // Determine ordering: the cluster with the lower average x is assumed to be the left cluster.
+          let avg0 = clustersX[0].reduce((sum, p) => sum + p.x, 0) / clustersX[0].length;
+          let avg1 = clustersX[1].reduce((sum, p) => sum + p.x, 0) / clustersX[1].length;
+          // For this example, we define:
+          //   If the left cluster (lower avg x) has 2 points, we call it "2-3 Defense".
+          //   Otherwise, it's "3-2 Defense".
+          if (avg0 < avg1) {
+            return clustersX[0].length === 2 ? "2-3 Defense" : "3-2 Defense";
+          } else {
+            return clustersX[1].length === 2 ? "2-3 Defense" : "3-2 Defense";
+          }
+        }
+      }
+      
+      return "Unidentified Formation";
+    }
+
+    // The findDefense function calls the formation detection function and displays the result.
+    function findDefense(side) {
+      const defenseType = identifyDefenseFormation();
+      defenseResult.textContent = "Detected Defense: 2-3 Defense: Put a big at the high post. Right at the free-throw line. Make the two top defenders decide: step up or stay. Drive and dish. Gaps open up between the top two and bottom three. Attack hard, then kick. Crash the offensive boards. Zones struggle to box out. Your hustle guys can feast. Overload one side. Stack 3 guys on one side (corner, wing, short corner). Force the zone to collapse."
     }
   </script>
 </body>

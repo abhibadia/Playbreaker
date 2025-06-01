@@ -497,8 +497,14 @@ body.dark-mode .center-time::after {
 }
 
 .slideshow_2{
-    margin-top: 100em; /* adds 1 unit of spacing after each paragraph */
+    margin-top: 10em; /* adds 1 unit of spacing after each paragraph */
 }
+
+.slideshow .slide,
+.slideshow_2 .slide_2 {
+  display: none;
+}
+
 
 .slide, .slide_2 {
     position: absolute;

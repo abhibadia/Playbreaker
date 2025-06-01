@@ -2,81 +2,216 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <style>
+    /* Founders Section Styles */
+    .founders {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .founder {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .founder-image {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+    .founder h2 {
+      margin-bottom: 10px;
+    }
+    .founder p {
+      font-size: 1.1em;
+      line-height: 1.5;
+      margin: 0 auto;
+      max-width: 600px;
+    }
+
+    /* Additional Sections */
+    .section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f7f7f7;
+      border-radius: 10px;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+    .section h2 {
+      margin-top: 0;
+    }
+    .read-more {
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 15px;
+    }
+    .read-more:hover {
+      background: #0056b3;
+    }
+    .more-info {
+      display: none;
+      margin-top: 15px;
+      font-size: 0.95em;
+      color: #555;
+    }
+
+    /* Dark Mode Adjustments */
+    .dark-mode .section {
+      background: #444;
+      color: #eee;
+    }
+    .dark-mode .read-more {
+      background: #28a745;
+    }
+    .dark-mode .read-more:hover {
+      background: #1e7e34;
+    }
+  </style>
 </head>
 
 <body>
-    <header>
-        <div class="navbar">
-            <a onclick = "location.href = '/'"> <!-- Link to the homepage -->
-                <img src="../static/images/logo2.png" alt="Logo" class="logo">
-            </a>
-            <div id="current-time" class="center-time"></div>
-            <div class="nav-links">
-                <a onclick="location.href = '/about'" accesskey="a"><u>A</u>bout</a>
-                <a onclick="location.href='/test'" accesskey="c"><u>C</u>oordinate Simulator</a>
-                <a onclick="location.href='/uploader'" accesskey="u">Video <u>U</u>pload</a>
-            </div>
-            <div class="toggle-switch-container">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="darkModeToggle">
-                    <span class="slider"></span>
-                </label>
-                <span class="toggle-text">Viewing Mode</span>
-            </div>
-        </div>
-    </header>
+  <header>
+    <div class="navbar">
+      <a onclick="location.href = '/'">
+        <!-- Link to the homepage -->
+        <img src="../static/images/logo2.png" alt="Logo" class="logo" />
+      </a>
+      <div id="current-time" class="center-time"></div>
+      <div class="nav-links">
+        <a onclick="location.href = '/about'" accesskey="a"><u>A</u>bout</a>
+        <a onclick="location.href='/test'" accesskey="c"><u>C</u>oordinate Simulator</a>
+        <a onclick="location.href='/uploader'" accesskey="u">Video <u>U</u>pload</a>
+      </div>
+      <div class="toggle-switch-container">
+        <label class="toggle-switch">
+          <input type="checkbox" id="darkModeToggle" />
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-text">Viewing Mode</span>
+      </div>
+    </div>
+  </header>
 
-    <script>
-        // Dark mode toggle functionality
-        const darkModeToggle = document.getElementById('darkModeToggle');
+  <script>
+    // Dark mode toggle functionality
+    const darkModeToggle = document.getElementById('darkModeToggle');
 
-        // Check localStorage for dark mode preference
-        if (localStorage.getItem('dark-mode') === 'true') {
-            document.body.classList.add('dark-mode');
-            darkModeToggle.checked = true;
-        }
+    // Check localStorage for dark mode preference
+    if (localStorage.getItem('dark-mode') === 'true') {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.checked = true;
+    }
 
-        // Toggle dark mode on checkbox change
-        darkModeToggle.addEventListener('change', () => {
-            document.body.classList.toggle('dark-mode');
-            // Save the user's preference to localStorage
-            localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
-        });
+    // Toggle dark mode on checkbox change
+    darkModeToggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-mode');
+      // Save the user's preference to localStorage
+      localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
+    });
 
-        // Function to update time
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const timeString = `${hours}:${minutes}:${seconds}`;
-            document.getElementById("current-time").textContent = timeString;
-        }
+    // Function to update time
+    function updateTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const timeString = `${hours}:${minutes}:${seconds}`;
+      document.getElementById("current-time").textContent = timeString;
+    }
 
-        // Update the time every second
-        setInterval(updateTime, 1000);
+    // Update the time every second
+    setInterval(updateTime, 1000);
+    updateTime();
 
-        // Initial call to display the time immediately
-        updateTime();
-    </script>
+    // Toggle additional information in sections
+    function toggleMore(id) {
+      const moreInfo = document.getElementById(id);
+      if (moreInfo.style.display === "none" || moreInfo.style.display === "") {
+        moreInfo.style.display = "block";
+      } else {
+        moreInfo.style.display = "none";
+      }
+    }
+  </script>
 
-    <!--- <audio id="background-music" autoplay loop>
-        <source src="/static/music/song1.mp3" type="audio/mp3">
-    </audio>
--->
-    <main>
-        <h1>About Us</h1>
-        <p>We’re Abhi and Surya, the creators of Ballr AI. Our mission is to help basketball players outside of the
-            college and professional levels access the kind of advanced analysis that’s usually reserved for elite
-            athletes. We built Ballr AI to empower players like us — high school athletes and rec league ballers — with
-            powerful tools to elevate their game. We believe that with the right insights, anyone can sharpen their
-            skills and understanding of basketball. Ballr AI is here to make that possible for everyone, no matter
-            where you play. Let’s raise the bar together!</p>
-    </main>
+  <!-- Optional background music commented out
+  <audio id="background-music" autoplay loop>
+      <source src="/static/music/song1.mp3" type="audio/mp3">
+  </audio>
+  -->
+
+  <main>
+    <h1 style="text-align: center; margin-top: 40px;">About Us</h1>
+    <p style="max-width: 800px; margin: 20px auto; font-size: 1.1em; text-align: center;">
+      We’re Abhi and Surya, the creators of Playbreaker. Our mission is to empower basketball players at every level with the
+      advanced analysis and insights usually reserved for elite athletes.
+    </p>
+
+    <!-- Founders Section -->
+    <section class="founders">
+      <div class="founder">
+        <img src="../static/images/Screenshot 2025-04-01 at 10.57.02 AM.png" alt="Founder Abhi" class="founder-image" />
+        <h2>Abhi</h2>
+        <p>
+          Abhi is passionate about basketball and technology. With a strong background in sports analytics, he leads the
+          innovation at Playbreaker, ensuring every player has access to professional-grade insights.
+        </p>
+      </div>
+      <div class="founder">
+        <img src="../static/images/Screenshot 2025-04-01 at 10.56.48 AM.png" alt="Founder Surya" class="founder-image" />
+        <h2>Surya</h2>
+        <p>
+          Surya brings a creative approach to data-driven basketball analysis. His expertise blends innovative strategies
+          with advanced analytics to push the boundaries of how players understand and improve their game.
+        </p>
+      </div>
+    </section>
+
+    <!-- Playbreaker Development Section -->
+    <section class="section">
+      <h2>How Playbreaker Was Developed</h2>
+      <p>
+        Playbreaker was born out of a shared passion for basketball and a vision to democratize elite sports analysis.
+        Combining years of experience and dedication, we set out to create a platform that bridges the gap between
+        professional insights and everyday athletes.
+      </p>
+      <button class="read-more" onclick="toggleMore('moreDev')">Read More</button>
+      <p id="moreDev" class="more-info">
+        Starting from long nights of brainstorming to rigorous testing on the court, every step of our journey has been
+        driven by the desire to empower players at all levels. Our iterative process involved close collaboration with
+        athletes, coaches, and tech experts to fine-tune the features and ensure the platform meets the real-world needs
+        of basketball enthusiasts.
+      </p>
+    </section>
+
+    <!-- Our Mission Section -->
+    <section class="section">
+      <h2>Our Mission</h2>
+      <p>
+        At Playbreaker, our mission is to raise the bar for basketball performance analysis. We believe that every player,
+        regardless of their level, deserves access to cutting-edge technology and insights to enhance their game and reach
+        their full potential.
+      </p>
+      <button class="read-more" onclick="toggleMore('moreMission')">Read More</button>
+      <p id="moreMission" class="more-info">
+        Through continuous innovation and a deep understanding of the sport, we strive to provide tools that not only
+        analyze performance but also inspire improvement. Our commitment is to build a community where data meets
+        passion, transforming the way basketball is played and enjoyed.
+      </p>
+    </section>
+  </main>
 </body>
 
 </html>
